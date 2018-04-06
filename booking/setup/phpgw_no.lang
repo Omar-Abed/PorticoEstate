@@ -360,6 +360,7 @@ Article Description	booking	no	Artikkelbeskrivelse
 Customer Type	booking	no	Kundetype
 Internal Customer	booking	no	Intern kunde
 SMS total	booking	no	SMS total
+Send as sms	booking	no	Send som sms
 Type	booking	no	Type
 Participants	booking	no	Deltagere
 Format	booking	no	Format
@@ -441,6 +442,7 @@ Labels	booking	no	Ledetekster
 account_code_dimension_helptext	booking	no	Feltene under lar deg redigere ledetekstene som dukker opp i oversikten over konteringsstrengen samt overskrift i CSV-eksporten. Tomme felter under fører til at tilhørende felter i CSV- og Agressoeksport ikke kommer ut i filene.
 Access denied	booking	no	Ingen tilgang
 Send to contact	booking	no	Send melding til registrerte kontaktpersoner av arrangementet
+Send sms to contact booking	no  Send sms til registrerte kontaktpersoner av arrangementet
 Send to contact for overlaping allocations/bookings	booking	no	Send melding til registrerte kontaktpersoner hvor det er overlapping
 Message sent about the changes in the reservations	booking	no	Melding sendt om endringer på reserverasjoner
 There are changes to your reservations	booking	no	Det er blitt endring på din reserverasjon

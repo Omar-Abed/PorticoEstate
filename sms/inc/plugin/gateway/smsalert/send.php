@@ -1,3 +1,4 @@
+
 <?php
 
 	class sms_sms extends sms_sms_
@@ -5,6 +6,7 @@
 
 		function __construct()
 		{
+             
 			parent::__construct();
 			$this->param = $GLOBALS['phpgw_info']['sms_config']['smsalert'];
 		}
@@ -27,7 +29,8 @@
 		}
 
 		function gw_send_sms( $mobile_sender, $sms_sender, $sms_to, $sms_msg, $gp_code = "", $uid = "", $smslog_id = "", $flash = false )
-		{
+		//function gw_send_sms( $mobile_sender, $sms_sender, $sms_to, $sms_msg)
+                {
 			$debug = empty($this->param['debug']) ? false : true;
 
 			$sms_to = ltrim($sms_to, '+');

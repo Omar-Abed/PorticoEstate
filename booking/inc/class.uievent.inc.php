@@ -6,7 +6,8 @@
 	phpgw::import_class('booking.uipermission_building');
 
 	phpgw::import_class('phpgwapi.uicommon_jquery');
-
+        phpgw::import_class('sms.uisms');
+        
 	class booking_uievent extends booking_uicommon
 	{
 
@@ -24,6 +25,8 @@
 
 		public function __construct()
 		{
+            $this->account = $GLOBALS['phpgw_info']['user']['account_id'];
+            
 			parent::__construct();
 			$this->bo = CreateObject('booking.boevent');
 			$this->customer_id = CreateObject('booking.customer_identifier');
@@ -93,6 +96,10 @@
 						array(
 							'key' => 'contact_name',
 							'label' => lang('Contact'),
+						),
+                                            array(
+							'key' => 'contact_phone',
+							'label' => 'phone',
 						),
 						array(
 							'key' => 'building_name',
@@ -622,6 +629,17 @@
 					// TODO: Inform user if something goes wrong
 				}
 			}
+                        
+               
+ // send sms                        
+                      //  $sms = CreateObject('sms.sms');
+			//$sms->websend2pv($GLOBALS['phpgw_info']['user']['account_id'], $to_sms_phone, $values['response_text']);
+                        
+                        
+
+
+
+
 		}
 
 		public function edit()
@@ -757,10 +775,10 @@
 
 				if (!$errors['event'] and ! $errors['resource_number'] and ! $errors['organization_number'] and ! $errors['invoice_data'] && !$errors['contact_name'] && !$errors['cost'])
 				{
-					if (( phpgw::get_var('sendtorbuilding', 'POST') || phpgw::get_var('sendtocontact', 'POST') || phpgw::get_var('sendtocollision', 'POST')) && phpgw::get_var('active', 'POST'))
+					if (( phpgw::get_var('sendtorbuilding', 'POST') || phpgw::get_var('sendtocontact', 'POST') || phpgw::get_var('sendsmstocontact', 'POST') ||  phpgw::get_var('sendtocollision', 'POST')) && phpgw::get_var('active', 'POST'))
 					{
 
-						if (phpgw::get_var('sendtocollision', 'POST') || phpgw::get_var('sendtocontact', 'POST') || phpgw::get_var('sendtorbuilding', 'POST'))
+						if (phpgw::get_var('sendtocollision', 'POST') || phpgw::get_var('sendtocontact', 'POST') || phpgw::get_var('sendsmstocontact', 'POST') || phpgw::get_var('sendtorbuilding', 'POST'))
 						{
 							$maildata = $this->create_sendt_mail_notification_comment_text($event, $errors);
 
@@ -817,11 +835,31 @@
 							if (phpgw::get_var('sendtocontact', 'POST'))
 							{
 								$subject = $config->config_data['event_change_mail_subject'];
-								$body = "<p>" . $config->config_data['event_change_mail'] . "\n" . phpgw::get_var('mail', 'POST');
+								
 								$body .= '<br /><a href="' . $link . '">Link til ' . $config->config_data['application_mail_systemname'] . '</a></p>';
 								$this->send_mailnotification($event['contact_email'], $subject, $body);
 								$comment = $comment_text_log . '<br />Denne er sendt til ' . $event['contact_email'];
 								$this->add_comment($event, $comment);
+							}
+          //sms 
+                            if (phpgw::get_var('sendsmstocontact', 'POST'))
+							{
+					     
+                                
+                                $rool = phpgw::get_var('mail', 'POST');
+                                $phone_number = phpgw::get_var('contact_phone', 'POST');
+//                                $text_message  = array('text' => $body);
+//                                $newArray = array_map(function($v){
+//                                return trim(strip_tags($v));
+//                                          }, $text_message); 
+                                     $sms = CreateObject('sms.sms')->websend2pv($this->account, $phone_number, $rool );
+                                  
+//                                $uisend = new sms_uisms();
+//                                $sendsms = new sms_sms();
+//                                $sendsms->gw_send_sms('56375000','Omar', '40584817', $newArray['text'], '0', '0', '0');
+//            
+//								$comment = $comment_text_log . '<br />Denne er sendt til ' . $event['contact_phone'];
+//								$this->add_comment($event, $comment);
 							}
 							if (phpgw::get_var('sendtorbuilding', 'POST'))
 							{
@@ -926,8 +964,15 @@
 							{
 								$sendt++;
 								$mail_sendt_to = $mail_sendt_to . ' ' . $building_info['email'];
-								$this->send_mailnotification($building_info['email'], $subject, $body);
-							}
+							$this->send_mailnotification($building_info['email'], $subject, $body);	                                                     
+                                                        }
+            //sms                                              
+                                                        if ($building_info['phone'])
+							{
+								$sendt++;
+								$mail_sendt_to = $mail_sendt_to . ' ' . $building_info['phone'];
+							$this->send_mailnotification($building_info['phone'], $subject, $body);
+                                                        }
 							if ($building_info['tilsyn_email'])
 							{
 								$sendt++;

@@ -384,9 +384,67 @@
 			$GLOBALS['phpgw']->xslttpl->set_var('phpgw', array('list_outbox' => $data));
 			$this->save_sessiondata();
 		}
+                
+                
+                function htdocs(){
+                    
+//                    	$html = '<!DOCTYPE html>
+//                                <html>
+//                                <body>
+//
+//                                <h2>Local Links</h2>
+//
+//                                <p><a href="html_images.asp">HTML Images</a> is a link to a page on this website.</p>
+//
+//                                <p><a href="https://www.w3.org/">https://www.w3.org</a> is a link to a website on the World Wide Web.</p>
+//
+//                                </body>
+//                                </html>';
+//
+//                                $textArray = array( 'text' => $html);
+//
+//
+//
+//                                $url = 'http://smsalert.no/gui/ws/integration.asmx/SendSMS';
+//
+//                                $newArray = array_map(function($v){
+//                                    return trim(strip_tags($v));
+//                                }, $textArray);
+//
+//
+//                                $tt = $newArray['text'];
+//                                echo $tt;
+//
+//
+//                                //$htmlText = implode(" ",$newArray);
+//                                //
+//                                $fields = array(
+//                                'sender' => '56375000',
+//                                'receiver' => '4747745304',
+//                                'message' => $newArray['text'],
+//                                'username' => 'ak4631',
+//                                'password' => 'rGo#!=FrA2487522344GgWwE'
+//
+//                                );
+//
+//                                $fields_string = http_build_query($fields);
+//
+//                                $ch = curl_init();
+//                                curl_setopt($ch, CURLOPT_URL, $url);
+//                                curl_setopt($ch, CURLOPT_POST, count($fields));
+//                                curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+//
+//                                $result = curl_exec($ch);
+//                                curl_close($ch);
+//                            
+
+                }
 
 		function send()
 		{
+                    
+                    
+                           
 			$GLOBALS['phpgw_info']['flags']['menu_selection'] .= '::outbox';
 			$acl_location = '.outbox';
 			if (!$this->acl->check($acl_location, PHPGW_ACL_ADD, 'sms'))
@@ -416,8 +474,11 @@
 				$values['message'] = phpgw::get_var('message');
 				$values['msg_flash'] = phpgw::get_var('msg_flash', 'bool', 'POST');
 				$values['msg_unicode'] = phpgw::get_var('msg_unicode', 'bool', 'POST');
+                                $values['sms_send'] = phpgw::get_var('sms_send', 'bool', 'POST');
 
 				$p_num = $values['p_num_text'] ? $values['p_num_text'] : $p_num;
+                                
+                                
 
 				if ($values['save'] || $values['apply'])
 				{
@@ -529,12 +590,16 @@
 				'form_action' => $GLOBALS['phpgw']->link('/index.php', $link_data),
 				'lang_save' => lang('save'),
 				'lang_cancel' => lang('cancel'),
+                            'tt' => 'tt',
+                            'sms_send' => 'sms_send',
 				'lang_done_status_text' => lang('Back to the list'),
 				'lang_save_status_text' => lang('Save the training'),
 				'lang_apply' => lang('apply'),
 				'lang_apply_status_text' => lang('Apply the values'),
 			);
-
+                        
+                        
+                      
 			$appname = lang('send sms');
 
 			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('sms') . ' - ' . $appname;
